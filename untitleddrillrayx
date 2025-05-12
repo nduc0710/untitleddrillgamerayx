@@ -1,0 +1,77 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/jensonhirst/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Rayx Hub | Untitled drill game ", HidePremium = false,IntroText = "Rayx Hub", SaveConfig = false, ConfigFolder = "OrionTest"})
+
+-- Tab creation
+local FarmTab = Window:MakeTab({
+    Name = "Autofarm",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+local MiscTab = Window:MakeTab({
+    Name = "Misc",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- Values
+_G.autoDrill = true
+_G.autoSell = true
+_G.autoCollectOre = true 
+-- Function
+
+function autoDrill()
+    while _G.autoDrill == true do
+   game:GetService("ReplicatedStorage").Packages.Knit.Services.OreService.RE.RequestRandomOre:FireServer()
+        wait (.0000000000000000000000000000000000000000000001)
+end
+end
+
+function autoSell()
+    while _G.autoSell == true do
+        local rootPart = game.Players.LocalPlayer.Character.Humanoid.RootPart
+        rootPart.CFrame = game:GetService("Workspace").Scripted.Sell.CFrame 
+   game:GetService("ReplicatedStorage").Packages.Knit.Services.OreService.RE.SellAll:FireServer()
+        wait(1)
+    end
+end
+
+function autoCollectOre()
+    while _G.autoCollectOre == true do
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.PlotService.RE.CollectDrill:FireServer(workspace.Plots.Plot.Drills["Twin Drill"])
+     end
+    end
+
+-- Toggle 
+FarmTab:AddToggle({
+    Name = "Auto drill(equip drill)",
+    Default = false,
+    Callback = function(Value)
+        _G.autoDrill = Value
+        autoDrill()
+    end
+})
+
+FarmTab:AddToggle({
+    Name = "Auto sell",
+    Default = false,
+    Callback = function(Value)
+        _G.autoSell = Value
+        autoSell()
+    end
+})
+
+FarmTab:AddToggle({
+    Name = "Auto Collect Ore(might be broken)",
+    Default = false,
+    Callback = function(Value)
+        _G.autoCollectOre = Value
+        autoCollectOre()
+    end
+})    
+-- Note
+MiscTab:AddLabel("Discord:gg/f7aG2vYq")
+
+
+
+OrionLib:Init()
